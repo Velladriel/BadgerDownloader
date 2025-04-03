@@ -32,7 +32,7 @@ MANIFEST
 *.manifest
 *.spec
 
-# Installer logs
+# Installer server_logs
 pip-log.txt
 pip-delete-this-directory.txt
 
@@ -237,6 +237,8 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+
+server_logs
 
 # Editor-based Rest Client
 .idea/httpRequests
