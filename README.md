@@ -46,5 +46,5 @@ This project is heave WIP.
 ## Planned features
 
 1. Support for other websites (e.g. Instagram, Twitter (if possible))
-2. Better UI
+2. Better UI including IP (or cookie) based user history
 3. Better deployment
