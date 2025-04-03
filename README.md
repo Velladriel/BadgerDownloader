@@ -1,6 +1,7 @@
 # Overview
 
 This repository contains a simple project split into a React frontend and a Python backend using Flask. It allows you to download and convert YouTube videos by providing a URL or search and selecting a target format.
+This project is heave WIP.
 
 ## Project Structure
 
