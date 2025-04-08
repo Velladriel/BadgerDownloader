@@ -32,12 +32,12 @@ front_end_dir = os.path.join(grand_parent_dir, "client")
 dist_dir = os.path.join(front_end_dir, "dist")
 
 # Server static files from "dist" folder under the "frontend" directory
-@app.route("/", defaults={"filename": ""})
-@app.route("/<path:filename>")
-def index(filename):
-    if not filename:
-        filename = "index.html"
-    return send_from_directory(dist_dir, filename)
+#@app.route("/", defaults={"filename": ""})
+#@app.route("/<path:filename>")
+#def index(filename):
+#    if not filename:
+#        filename = "index.html"
+#    return send_from_directory(dist_dir, filename)
 
 # api routes
 import routes
