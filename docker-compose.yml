@@ -1,0 +1,31 @@
+version: '3.8'
+
+volumes:
+  logs_data:
+  download_data:
+  instance_data:
+
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - logs_data:/app/logs
+      - download_data:/app/downloads
+      - instance_data:/app/instance
+    restart: always
+
+  client:
+      build:
+        context: ./client
+        dockerfile: Dockerfile
+      ports:
+        - "3000:80"
+      restart: always
+
+networks:
+  default:
+    driver: bridge

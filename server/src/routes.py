@@ -20,7 +20,7 @@ def download():
 
     :return: Downloaded file
     """
-    log = logger.get_logger(level=10)
+    log = logger.get_logger()
 
     data = request.json
 
