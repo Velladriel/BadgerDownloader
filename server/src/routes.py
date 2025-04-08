@@ -14,7 +14,6 @@ output_dir = os.path.join(parent_dir, 'downloads')
 
 
 @app.route("/api/download", methods=['POST'])
-@cross_origin(origins='*')
 def download():
     """
     Downloads file via yt_dlp and sends it to client
