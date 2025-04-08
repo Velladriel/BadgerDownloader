@@ -1,7 +1,7 @@
 import asyncio
 import os
 from flask import request, jsonify, send_from_directory, abort
-
+from flask_cors import cross_origin
 
 from app import app, db
 import yt_downloader
@@ -14,6 +14,7 @@ output_dir = os.path.join(parent_dir, 'downloads')
 
 
 @app.route("/api/download", methods=['POST'])
+@cross_origin(origins='*')
 def download():
     """
     Downloads file via yt_dlp and sends it to client
