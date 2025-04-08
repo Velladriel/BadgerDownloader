@@ -9,11 +9,16 @@ import utils
 import os
 import logger
 
+def dynamic_origin(origin):
+    # You can add custom logic here to validate the origin.
+    # For now, let's simply allow any origin.
+    return origin
+
 parent_dir = utils.get_parent_dir()
 instance_dir = os.path.join(parent_dir, 'instance')
 os.makedirs(instance_dir, exist_ok=True)
 app = Flask(__name__)
-CORS(app, expose_headers=["Content-Disposition"])
+CORS(app, resources={r"/*": {"origins": dynamic_origin}}, expose_headers=["Content-Disposition"])
 
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{os.path.join(instance_dir, 'database.db')}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
