@@ -13,7 +13,7 @@ parent_dir = utils.get_parent_dir()
 instance_dir = os.path.join(parent_dir, 'instance')
 os.makedirs(instance_dir, exist_ok=True)
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "192.168.178.70"}}, expose_headers=["Content-Disposition"])
+CORS(app, expose_headers=["Content-Disposition"])
 
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{os.path.join(instance_dir, 'database.db')}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
