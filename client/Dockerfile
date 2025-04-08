@@ -9,7 +9,7 @@ RUN npm run build
 
 # Debug step: list the current directory structure
 RUN ls -la /app
-RUN ls /app
+RUN ls -la /app/dist
 RUN ls -la /app/build
 
 
