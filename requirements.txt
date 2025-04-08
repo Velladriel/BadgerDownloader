@@ -1,5 +1,0 @@
-flask
-flask-sqlalchemy
-flask-cors
-yt-dlp
-utils
