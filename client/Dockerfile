@@ -14,5 +14,5 @@ RUN ls -la /app/build
 
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE 5000
+EXPOSE 3000
 CMD ["nginx", "-g", "daemon off;"]
