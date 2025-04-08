@@ -45,9 +45,12 @@ def get_downloaded_files():
     else:
         return None
 
-def get_parent_dir():
+def get_parent_dir(current_dir=None):
     """
     :return: Parent dir
     """
-    current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    if not current_dir:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
     return os.path.abspath(os.path.join(current_dir, '..'))
