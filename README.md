@@ -42,7 +42,8 @@ This repository contains a simple project split into a React frontend and a Pyth
 This project is fully dockerized. To run the entire application using Docker and docker-compose:
 
 1. Ensure Docker is installed and running.
-2. From the project root directory, execute:
+2. In the client Dockerfile change the IP address to your server address
+3. From the project root directory, execute:
 
    ```bash
    docker-compose up --build
