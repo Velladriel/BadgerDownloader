@@ -3,6 +3,8 @@ import os
 from os.path import isfile, join, isdir
 
 
+
+
 def extract_relevant_info(info: dict):
     """
     :param info: YTDL process_info
@@ -45,12 +47,45 @@ def get_downloaded_files():
     else:
         return None
 
-def get_parent_dir(current_dir=None):
+def get_parent_dir(current_dir=os.path.dirname(os.path.abspath(__file__))):
     """
     :return: Parent dir
     """
 
-    if not current_dir:
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-
     return os.path.abspath(os.path.join(current_dir, '..'))
+
+def get_dir_size(directory):
+    return sum(os.path.getsize(os.path.join(directory, f)) for f in os.listdir(directory)
+               if os.path.isfile(os.path.join(directory, f)))
+
+
+def get_file_ages(directory):
+
+    files = {}
+
+    for f in os.listdir(directory):
+        st = os.stat(os.path.join(directory, f))
+        files[f] = st.st_mtime
+
+    return dict(sorted(files.items(), key=lambda item: item[1], reverse=True))
+
+
+def clean_dir(directory):
+    """
+    Deletes oldest file
+    :param directory: Download folder
+    """
+    files = get_file_ages(directory)
+
+    file_names = list(files.keys())
+
+    if file_names:
+        os.remove(os.path.join(directory, file_names[0]))
+
+
+
+
+
+
+if __name__ == "__main__":
+    clean_dir(os.path.join(get_parent_dir(), "downloads"))
