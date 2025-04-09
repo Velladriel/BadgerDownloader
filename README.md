@@ -1,50 +1,48 @@
 # Overview
 
-This repository contains a simple project split into a React frontend and a Python backend using Flask. It allows you to download and convert YouTube videos by providing a URL or search and selecting a target format.
-This project is heave WIP.
+This repository contains a simple project split into a React frontend and a Python backend using Flask. It allows you to download and convert YouTube videos by providing a URL or searching and selecting a target format. This project is a heavy work in progress.
 
 ## Project Structure
 
 - **client/src/App.jsx**  
   Main React component that sets up the application layout.
 
-- **client/src/components/**
-
-  React components for frontend.
+- **client/src/components/**  
+  React components for the frontend.
 
 - **server/src/yt_downloader.py**  
   Python module using `yt-dlp` for downloading and converting videos.
 
 - **server/src/routes.py**  
-  Flask routes for handling the API endpoint.
+  Flask routes to handle API endpoints.
 
 ## Prerequisites
 
-- **Node.js** and **npm** installed for the frontend.
-- **Python**  and **pip** installed for the backend.
+- **Node.js** and **npm** for the frontend.
+- **Python** and **pip** for the backend.
+- **Docker** installed to run containers.
 
 ## Installation
 
-1. **Frontend**  
-   - Navigate to `client`  
-   - Run `npm install`  
-   - Then `npm run dev` (or `./dev_start_client.sh`) to start the development server.
+### Frontend (Development)
 
-2. **Backend**  
-   - Navigate to `server`  
-   - Create and activate a virtual environment  
-   - Run `pip install -r requirements.txt`  
-   - Start the Flask server (e.g., `./dev_start_server.sh` or your entry point).
+1. Navigate to the `client` directory.
+2. Run `npm install`.
+3. Start the development server with `npm run dev` (or using the provided shell script).
 
-## Usage
+### Backend (Development)
 
-1. Open the frontend in your browser at `http://ip:3000`.
-2. Enter the YouTube URL or search  in the field.
-3. Select your desired format.
-4. Click **Download!** to receive your file.
+1. Navigate to the `server` directory.
+2. Create and activate a virtual environment.
+3. Run `pip install -r requirements.txt`.
+4. Start the Flask server (for example, via `./dev_start_server.sh` or your chosen entry point).
 
-## Planned features
+## Docker Deployment
 
-1. Support for other websites (e.g. Instagram, Twitter (if possible))
-2. Better UI including IP (or cookie) based user history
-3. Better deployment
+This project is fully dockerized. To run the entire application using Docker and docker-compose:
+
+1. Ensure Docker is installed and running.
+2. From the project root directory, execute:
+
+   ```bash
+   docker-compose up --build
