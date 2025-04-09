@@ -4,7 +4,7 @@ import Searchfield from "@/components/Searchfield.jsx";
 
 
 
-export const BASE_URL = "http://192.168.178.116:5000/api"
+export const BASE_URL = import.meta.env.VITE_API_BASE + "/api"
 
 function App() {
 
