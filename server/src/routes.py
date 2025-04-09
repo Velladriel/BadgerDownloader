@@ -13,7 +13,8 @@ parent_dir = os.path.dirname(current_dir)
 output_dir = os.path.join(parent_dir, 'downloads')
 
 
-@app.route("/api/download", methods=['POST', 'OPTIONS'])
+@app.route("/api/download", methods=['POST'])
+@cross_origin(expose_headers=["Content-Disposition"])
 def download():
     """
     Downloads file via yt_dlp and sends it to client
@@ -21,8 +22,8 @@ def download():
     :return: Downloaded file
     """
 
-    if request.method == "OPTIONS":
-        return "", 204
+    #if request.method == "OPTIONS":
+    #    return "", 204
 
     log = logger.get_logger()
 
