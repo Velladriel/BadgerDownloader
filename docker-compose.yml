@@ -23,7 +23,7 @@ services:
         context: ./client
         dockerfile: Dockerfile
       ports:
-        - "3000:81"
+        - "3000:80"
       restart: always
 
 networks:
