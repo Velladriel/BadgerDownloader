@@ -11,7 +11,7 @@ RUN npm run build
 RUN ls -la /app
 RUN ls -la /app/build
 
-EXPORT VITE_API_BASE=http//:192.168.178.70:5000
+ENV VITE_API_BASE=http://192.168.178.70:5000
 
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
