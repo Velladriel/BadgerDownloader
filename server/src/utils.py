@@ -70,9 +70,10 @@ def get_file_ages(directory):
     return dict(sorted(files.items(), key=lambda item: item[1], reverse=True))
 
 
-def clean_dir(directory):
+def clean_dir(directory, exception):
     """
     Deletes oldest file
+    :param exception:  File that shouldnt be deleted
     :param directory: Download folder
     """
     files = get_file_ages(directory)
@@ -80,7 +81,9 @@ def clean_dir(directory):
     file_names = list(files.keys())
 
     if file_names:
-        os.remove(os.path.join(directory, file_names[0]))
+
+        if file_names[0] != exception:
+            os.remove(os.path.join(directory, file_names[0]))
 
 
 
