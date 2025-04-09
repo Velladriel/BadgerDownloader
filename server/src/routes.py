@@ -7,9 +7,14 @@ import yt_downloader
 import logger
 from models import DownloadInfo
 
+from utils import clean_dir, get_parent_dir, get_dir_size
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 output_dir = os.path.join(parent_dir, 'downloads')
+
+#In MB
+DOWNLOAD_DIR_LIMIT = 1
 
 
 @app.route("/api/download", methods=['POST'])
@@ -53,6 +58,8 @@ def download():
     db.session.add(download_info)
     db.session.commit()
 
+    download_folder = os.path.join(get_parent_dir(), "downloads")
+
     file_path = f"{output_dir}/{info['title']}.{info['format']}"
 
     log.debug(f"Download file path: {file_path}")
@@ -63,5 +70,9 @@ def download():
         abort(404, description="Resource not found")
 
     file_name = f"{info['title']}.{info['format']}"
+
+    if get_dir_size(download_folder) >= DOWNLOAD_DIR_LIMIT * 1024**3:
+        log.info("Delete file")
+        clean_dir(download_folder, file_name)
 
     return send_from_directory(output_dir, file_name , as_attachment=True, download_name=file_name)

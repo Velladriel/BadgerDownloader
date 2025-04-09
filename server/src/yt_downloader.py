@@ -55,7 +55,7 @@ async def execute_download(search: str, ydl_opts: dict, output_path: str, format
     :return: extracted video info
     """
 
-    log.info("Starting download")
+    log.info(f"Starting download of: {search}")
 
     ytdl = yt_dlp.YoutubeDL(ydl_opts)
 
