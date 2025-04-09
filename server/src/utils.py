@@ -3,6 +3,8 @@ import os
 from os.path import isfile, join, isdir
 
 
+def get_file_size(file_path):
+    return os.path.getsize(file_path)
 
 
 def extract_relevant_info(info: dict):

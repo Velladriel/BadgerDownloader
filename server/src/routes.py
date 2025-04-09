@@ -3,7 +3,7 @@ import os
 from flask import request, jsonify, send_from_directory, abort
 
 from app import app, db
-import yt_downloader
+import yt_downloader, in_downloader
 import logger
 from models import DownloadInfo
 
@@ -36,9 +36,12 @@ def download():
         return jsonify({"error": "No url provided"}), 400
 
 
-    info = asyncio.run(yt_downloader.download_video(url, format))
-    log.debug(f"Download info: {info}")
+    if "instagram.com" in url:
+        info = in_downloader.download_reel(url, format)
+    else:
+        info = asyncio.run(yt_downloader.download_video(url, format))
 
+    log.debug(f"Download info: {info}")
 
     try:
         download_info = DownloadInfo(
@@ -51,6 +54,7 @@ def download():
             duration=info.get('duration'),
             size=info.get('file_size')
         )
+
     except AttributeError:
         if info[0]["error"]:
             abort(info[1], info[0]["error"])

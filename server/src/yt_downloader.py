@@ -11,8 +11,6 @@ output_dir = os.path.join(utils.get_parent_dir(), 'downloads')
 
 log = logger.get_logger('yt_downloader')
 
-def get_file_size(file_path):
-    return os.path.getsize(file_path)
 
 def create_ydl_opts(output_path: str, format: str = None):
     """
@@ -102,10 +100,10 @@ async def execute_download(search: str, ydl_opts: dict, output_path: str, format
 
 
     if format:
-        size = get_file_size(f"{output_path}/{sanitized_title}.{format}")
+        size = utils.get_file_size(f"{output_path}/{sanitized_title}.{format}")
         process_info["format"] = format
     else:
-        size = get_file_size(f"{output_path}/{sanitized_title}.{process_info['ext']}")
+        size = utils.get_file_size(f"{output_path}/{sanitized_title}.{process_info['ext']}")
         process_info["format"] = process_info['ext']
 
     process_info["file_size"] = size
