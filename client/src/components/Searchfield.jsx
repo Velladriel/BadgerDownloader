@@ -16,7 +16,7 @@ const Searchfield = () => {
   //const [isLoading, setIsLoading] = useState(false);
   const [inputs, setInputs] = useState({
     "url": "",
-    "format": "mp3"
+    "format": "mp4"
   });
 
   const handleInputChange = (e) => {
@@ -68,7 +68,7 @@ const Searchfield = () => {
     } catch (error) {
       console.error("Error: ", error);
     } finally {
-      setInputs({ url: "", format: "mp3" });
+      setInputs({ url: "", format: "mp4" });
     }
   };
 
