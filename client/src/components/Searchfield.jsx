@@ -77,7 +77,7 @@ const Searchfield = () => {
       <Stack>
         <Fieldset.Legend>Download Video</Fieldset.Legend>
         <Fieldset.HelperText>
-          Enter YouTube URL below:
+          Enter Youtube Search/URL or Instagram Reel URL below:
         </Fieldset.HelperText>
       </Stack>
 
@@ -91,7 +91,7 @@ const Searchfield = () => {
           <Field.Label>Format</Field.Label>
           <NativeSelect.Root>
             <NativeSelect.Field name="format" value={inputs.format} onChange={handleInputChange}>
-              <For each={['mp3', 'm4a', 'opus', 'vorbis', 'wav', 'mp4', 'flv', 'webm', 'ogg', 'mkv']}>
+              <For each={['mp4', 'mp3', 'opus', 'vorbis', 'wav', 'm4a', 'flv', 'webm', 'ogg', 'mkv']}>
                 {(item) => (
                   <option key={item} value={item}>
                     {item}
