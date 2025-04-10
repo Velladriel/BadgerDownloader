@@ -75,6 +75,8 @@ def download():
 
     file_name = f"{info['title']}.{info['format']}"
 
+    log.info(f"File: {file_name}")
+
     if get_dir_size(download_folder) >= DOWNLOAD_DIR_LIMIT * 1024**3:
         log.info("Delete file")
         clean_dir(download_folder, file_name)
