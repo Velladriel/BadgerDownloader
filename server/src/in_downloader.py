@@ -16,7 +16,6 @@ def build_video_info(post: instaloader.Post, size, video_name):
     relevant_info = {
         'id': post.shortcode,
         'title': video_name,
-        'url': post.video_url,
         'thumbnail': post.url,
         'duration': post.video_duration,
         'format': "mp4",
@@ -82,6 +81,8 @@ def download_reel(url, format):
         except Exception as e:
             log.exception("Error while transforming Instagram video")
             return {"error": str(e)}, 400
+
+    info["url"] = url
 
     print(info)
 
