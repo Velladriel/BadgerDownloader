@@ -1,5 +1,8 @@
 import asyncio
 import os
+from crypt import methods
+
+import sqlalchemy
 from flask import request, jsonify, send_from_directory, abort
 
 from app import app, db
@@ -15,6 +18,24 @@ output_dir = os.path.join(parent_dir, 'downloads')
 
 #In MB
 DOWNLOAD_DIR_LIMIT = 1
+
+@app.route("/api/get_downloads", methods=["GET"])
+def get_downloads():
+    """
+    Gets recent downloads for specific IP
+
+    :return: Downloaded songs as json
+    """
+
+    log = logger.get_logger(level=10)
+    ip = request.remote_addr
+
+    log.debug(f"Request IP: {ip}")
+
+    downloads = DownloadInfo.query.filter(DownloadInfo.requester_ip == ip)
+    result = [download.to_json() for download in downloads]
+
+    return jsonify(result)
 
 
 @app.route("/api/download", methods=['POST'])
