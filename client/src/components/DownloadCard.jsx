@@ -1,5 +1,18 @@
 import React from 'react';
-import {Button, Card, Container, DataList, Flex, For, Grid, Image, NativeSelect, Stack} from "@chakra-ui/react";
+import {
+    Button,
+    Card,
+    Dialog,
+    DataList,
+    Flex,
+    For,
+    Grid,
+    Image,
+    NativeSelect,
+    Portal,
+    Stack,
+    CloseButton
+} from "@chakra-ui/react";
 
 
 function formatBytes(bytes, decimals=2) {
@@ -95,11 +108,45 @@ const DownloadCard = ({download}) => (
 
                     <Button>Download</Button>
 
-                    <Button
-                      bg="red.500"
-                      _hover={{ bg: "red.600" }}
-                      color="white"
-                    >Delete</Button>
+                    <Dialog.Root>
+                        <Dialog.Trigger asChild>
+                             <Button
+                                 bg="red.500"
+                                 _hover={{ bg: "red.600" }}
+                                 color="white"
+                             >Delete</Button>
+                      </Dialog.Trigger>
+                      <Portal>
+                        <Dialog.Backdrop />
+                        <Dialog.Positioner>
+                          <Dialog.Content>
+                            <Dialog.Header>
+                              <Dialog.Title>Confirmation</Dialog.Title>
+                            </Dialog.Header>
+                            <Dialog.Body>
+                              <p>
+                                Are you sure that the download entry should be deleted? It can't be restored.
+                              </p>
+                            </Dialog.Body>
+                            <Dialog.Footer>
+                              <Dialog.ActionTrigger asChild>
+                                <Button variant="outline">Cancel</Button>
+                              </Dialog.ActionTrigger>
+                              <Button
+                                 bg="red.500"
+                                 _hover={{ bg: "red.600" }}
+                                 color="white"
+                              >Delete</Button>
+                            </Dialog.Footer>
+                            <Dialog.CloseTrigger asChild>
+                              <CloseButton size="sm" />
+                            </Dialog.CloseTrigger>
+                          </Dialog.Content>
+                        </Dialog.Positioner>
+                      </Portal>
+                    </Dialog.Root>
+
+
                 </Flex>
             </Grid>
         </Card.Body>

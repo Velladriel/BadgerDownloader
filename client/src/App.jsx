@@ -19,13 +19,7 @@ function App() {
           <Box padding="4" />
 
           <Container maxW={"900px"}>
-              <Text
-					fontSize={{ base: "2xl", md: "50" }}
-					fontWeight={"bold"}
-					letterSpacing={"2px"}
-					textAlign={"left"}
-					mb={8}
-				> Last downloads: </Text>
+
           <DownloadedStack/>
           </Container>
       </Stack>
