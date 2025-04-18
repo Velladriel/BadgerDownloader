@@ -16,7 +16,7 @@ class DownloadInfo(db.Model):
     def to_json(self):
         return {
             "id": self.yt_id,
-            "requester_ip": self.requester_ipq,
+            "requester_ip": self.requester_ip,
             "title": self.title,
             "url": self.url,
             "thumbnail_url": self.thumbnail_url,
