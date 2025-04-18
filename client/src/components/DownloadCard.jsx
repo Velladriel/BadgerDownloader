@@ -49,6 +49,19 @@ function timeAgo(dateString) {
   return "Just now";
 }
 
+function secondsToHms(duratiion) {
+    duratiion = Number(duratiion);
+    var h = Math.floor(duratiion / 3600);
+    var m = Math.floor(duratiion % 3600 / 60);
+    var s = Math.floor(duratiion % 3600 % 60);
+
+    var hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
+    var mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
+    var sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
+    return hDisplay + mDisplay + sDisplay; 
+}
+
+
 const DownloadCard = ({download}) => (
     <Card.Root size="md">
         <Card.Header>
@@ -74,7 +87,7 @@ const DownloadCard = ({download}) => (
                     </DataList.Item>
                     <DataList.Item>
                         <DataList.ItemLabel>Duration</DataList.ItemLabel>
-                        <DataList.ItemValue>{download.duration}s</DataList.ItemValue>
+                        <DataList.ItemValue>{secondsToHms(download.duration)}</DataList.ItemValue>
                     </DataList.Item>
                     <DataList.Item>
                         <DataList.ItemLabel>Format</DataList.ItemLabel>
