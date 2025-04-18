@@ -28,15 +28,7 @@ function App() {
 				> Last downloads: </Text>
           <DownloadedStack/>
           </Container>
-
-
-
-
-
       </Stack>
-
-
-
         )
 }
 
