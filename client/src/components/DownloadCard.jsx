@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import {BASE_URL} from "@/App.jsx";
 import {toaster, Toaster} from "@/components/ui/toaster.jsx";
+import {handleURLSubmit} from "@/utils/handleDownloadURL.js";
 
 
 function formatBytes(bytes, decimals=2) {
@@ -86,6 +87,10 @@ const DownloadCard = ({download, setDownloads}) => {
 
             if (dialogRef.current) {
                 dialogRef.current.click();
+                toaster.success({
+                    title: "Download deleted",
+                    description: "Download entry has been deleted",
+                });
             }
 
         } catch (error) {
@@ -151,7 +156,7 @@ const DownloadCard = ({download, setDownloads}) => {
                             </NativeSelect.Field>
                         </NativeSelect.Root>
 
-                        <Button>Download</Button>
+                        <Button onClick={handleURLSubmit(download)}>Download</Button>
 
                         <Dialog.Root>
                             <Dialog.Trigger asChild>
