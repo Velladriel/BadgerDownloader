@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
     Button,
     Card,
@@ -13,6 +13,8 @@ import {
     Stack,
     CloseButton
 } from "@chakra-ui/react";
+import {BASE_URL} from "@/App.jsx";
+import {toaster, Toaster} from "@/components/ui/toaster.jsx";
 
 
 function formatBytes(bytes, decimals=2) {
@@ -62,108 +64,141 @@ function secondsToHms(duratiion) {
 }
 
 
-const DownloadCard = ({download}) => (
-    <Card.Root size="md">
-        <Card.Header>
-            {download.title}
-        </Card.Header>
-        <Card.Body>
+const DownloadCard = ({download, setDownloads}) => {
 
-            <Grid templateColumns="repeat(4, 1fr)" gap="6">
-                <Flex gap={4}>
-                    <Flex flex={"1"} gap={"4"} alignItems={"center"}>
-                        <Image src={download.thumbnail_url}
-                        aspectRatio={4 / 3} width="300px" height="150px"
-                        fallbackSrc='https://via.placeholder.com/150'
-                        />
+    const dialogRef = useRef(null);
 
+    const handleDeleteDownload = async () => {
+        try {
+            console.log(download.id)
+            const res = await fetch(BASE_URL + "/downloads/" + download.id, {
+                method: "DELETE",
+            });
+
+            const data = await res.json()
+            if (!res.ok) {
+				throw new Error(data.error);
+			}
+
+            setDownloads((prevDownloads) =>
+                prevDownloads.filter((d) => d.id !== download.id)
+            );
+
+            if (dialogRef.current) {
+                dialogRef.current.click();
+            }
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    return (
+
+        <Card.Root size="md">
+            <Card.Header>
+                {download.title}
+            </Card.Header>
+            <Card.Body>
+
+                <Grid templateColumns="repeat(4, 1fr)" gap="6">
+                    <Flex gap={4}>
+                        <Flex flex={"1"} gap={"4"} alignItems={"center"}>
+                            <Image src={download.thumbnail_url}
+                                   aspectRatio={4 / 3} width="300px" height="150px"
+                                   fallbackSrc='https://via.placeholder.com/150'
+                            />
+
+                        </Flex>
                     </Flex>
-                </Flex>
 
-                <DataList.Root>
-                    <DataList.Item>
-                        <DataList.ItemLabel>Title</DataList.ItemLabel>
-                        <DataList.ItemValue>{download.title}</DataList.ItemValue>
-                    </DataList.Item>
-                    <DataList.Item>
-                        <DataList.ItemLabel>Duration</DataList.ItemLabel>
-                        <DataList.ItemValue>{secondsToHms(download.duration)}</DataList.ItemValue>
-                    </DataList.Item>
-                    <DataList.Item>
-                        <DataList.ItemLabel>Format</DataList.ItemLabel>
-                        <DataList.ItemValue>{download.format}</DataList.ItemValue>
-                    </DataList.Item>
-                </DataList.Root>
+                    <DataList.Root>
+                        <DataList.Item>
+                            <DataList.ItemLabel>Title</DataList.ItemLabel>
+                            <DataList.ItemValue>{download.title}</DataList.ItemValue>
+                        </DataList.Item>
+                        <DataList.Item>
+                            <DataList.ItemLabel>Duration</DataList.ItemLabel>
+                            <DataList.ItemValue>{secondsToHms(download.duration)}</DataList.ItemValue>
+                        </DataList.Item>
+                        <DataList.Item>
+                            <DataList.ItemLabel>Format</DataList.ItemLabel>
+                            <DataList.ItemValue>{download.format}</DataList.ItemValue>
+                        </DataList.Item>
+                    </DataList.Root>
 
-                <DataList.Root>
-                    <DataList.Item>
-                        <DataList.ItemLabel>Size</DataList.ItemLabel>
-                        <DataList.ItemValue>{formatBytes(download.size)}</DataList.ItemValue>
-                    </DataList.Item>
-                    <DataList.Item>
-                        <DataList.ItemLabel>Download time</DataList.ItemLabel>
-                        <DataList.ItemValue>{timeAgo(download.datetime)}</DataList.ItemValue>
-                    </DataList.Item>
-                </DataList.Root>
+                    <DataList.Root>
+                        <DataList.Item>
+                            <DataList.ItemLabel>Size</DataList.ItemLabel>
+                            <DataList.ItemValue>{formatBytes(download.size)}</DataList.ItemValue>
+                        </DataList.Item>
+                        <DataList.Item>
+                            <DataList.ItemLabel>Download time</DataList.ItemLabel>
+                            <DataList.ItemValue>{timeAgo(download.datetime)}</DataList.ItemValue>
+                        </DataList.Item>
+                    </DataList.Root>
 
-                <Flex direction="column" gap={4} justifySelf="end"  >
-                    <NativeSelect.Root>
-                        <NativeSelect.Field name="format"  value={download.format}>
-                          <For each={['mp4', 'mp3', 'opus', 'vorbis', 'wav', 'm4a', 'flv', 'webm', 'ogg', 'mkv']}>
-                            {(item) => (
-                              <option key={item} value={item}>
-                                {item}
-                              </option>
-                            )}
-                          </For>
-                        </NativeSelect.Field>
+                    <Flex direction="column" gap={4} justifySelf="end">
+                        <NativeSelect.Root>
+                            <NativeSelect.Field name="format" value={download.format}>
+                                <For each={['mp4', 'mp3', 'opus', 'vorbis', 'wav', 'm4a', 'flv', 'webm', 'ogg', 'mkv']}>
+                                    {(item) => (
+                                        <option key={item} value={item}>
+                                            {item}
+                                        </option>
+                                    )}
+                                </For>
+                            </NativeSelect.Field>
                         </NativeSelect.Root>
 
-                    <Button>Download</Button>
+                        <Button>Download</Button>
 
-                    <Dialog.Root>
-                        <Dialog.Trigger asChild>
-                             <Button
-                                 bg="red.500"
-                                 _hover={{ bg: "red.600" }}
-                                 color="white"
-                             >Delete</Button>
-                      </Dialog.Trigger>
-                      <Portal>
-                        <Dialog.Backdrop />
-                        <Dialog.Positioner>
-                          <Dialog.Content>
-                            <Dialog.Header>
-                              <Dialog.Title>Confirmation</Dialog.Title>
-                            </Dialog.Header>
-                            <Dialog.Body>
-                              <p>
-                                Are you sure that the download entry should be deleted? It can't be restored.
-                              </p>
-                            </Dialog.Body>
-                            <Dialog.Footer>
-                              <Dialog.ActionTrigger asChild>
-                                <Button variant="outline">Cancel</Button>
-                              </Dialog.ActionTrigger>
-                              <Button
-                                 bg="red.500"
-                                 _hover={{ bg: "red.600" }}
-                                 color="white"
-                              >Delete</Button>
-                            </Dialog.Footer>
-                            <Dialog.CloseTrigger asChild>
-                              <CloseButton size="sm" />
-                            </Dialog.CloseTrigger>
-                          </Dialog.Content>
-                        </Dialog.Positioner>
-                      </Portal>
-                    </Dialog.Root>
+                        <Dialog.Root>
+                            <Dialog.Trigger asChild>
+                                <Button
+                                    bg="red.500"
+                                    _hover={{bg: "red.600"}}
+                                    color="white"
+                                >Delete</Button>
+                            </Dialog.Trigger>
+                            <Portal>
+                                <Dialog.Backdrop/>
+                                <Dialog.Positioner>
+                                    <Dialog.Content>
+                                        <Dialog.Header>
+                                            <Dialog.Title>Confirmation</Dialog.Title>
+                                        </Dialog.Header>
+                                        <Dialog.Body>
+                                            <p>
+                                                Are you sure that the download entry should be deleted? It can't be
+                                                restored.
+                                            </p>
+                                        </Dialog.Body>
+                                        <Dialog.Footer>
+                                            <Dialog.ActionTrigger asChild>
+                                                <Button variant="outline">Cancel</Button>
+                                            </Dialog.ActionTrigger>
+                                            <Button
+                                                bg="red.500"
+                                                _hover={{bg: "red.600"}}
+                                                color="white"
+                                                onClick={handleDeleteDownload}
+                                            >Delete</Button>
+                                        </Dialog.Footer>
+                                        <Dialog.CloseTrigger asChild>
+                                            <CloseButton size="sm" ref={dialogRef}/>
+                                        </Dialog.CloseTrigger>
+                                    </Dialog.Content>
+                                </Dialog.Positioner>
+                            </Portal>
+                        </Dialog.Root>
 
+                    </Flex>
+                </Grid>
+            </Card.Body>
+        </Card.Root>
+    );
+};
 
-                </Flex>
-            </Grid>
-        </Card.Body>
-    </Card.Root>
-);
 
 export default DownloadCard;

@@ -97,7 +97,7 @@ const DownloadedStack = () => {
 
       <Stack spacing={6}>
         {visible.map((d) => (
-          <DownloadCard key={d.id} download={d} />
+          <DownloadCard key={d.id} download={d} setDownloads={setDownloads}/>
         ))}
       </Stack>
     </Box>
