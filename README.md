@@ -43,7 +43,7 @@ The easiest way to run BadgerDownloader is using Docker:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/BadgerDownloader.git
+   git clone https://github.com/Velladriel/BadgerDownloader
    cd BadgerDownloader
    ```
 
