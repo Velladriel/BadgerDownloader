@@ -24,6 +24,17 @@ This repository contains a simple project split into a React frontend and a Pyth
 
 ## Installation
 
+### Docker Deployment (Recommended)
+
+This project is fully dockerized. To run the entire application using Docker and docker-compose:
+
+1. Ensure Docker is installed and running.
+2. In the client Dockerfile change the IP address to your server address (this will change)
+3. From the project root directory, execute:
+
+   ```bash
+   docker-compose up --build
+
 ### Frontend (Development)
 
 1. Navigate to the `client` directory.
@@ -37,13 +48,3 @@ This repository contains a simple project split into a React frontend and a Pyth
 3. Run `pip install -r requirements.txt`.
 4. Start the Flask server (for example, via `./dev_start_server.sh` or your chosen entry point).
 
-## Docker Deployment
-
-This project is fully dockerized. To run the entire application using Docker and docker-compose:
-
-1. Ensure Docker is installed and running.
-2. In the client Dockerfile change the IP address to your server address
-3. From the project root directory, execute:
-
-   ```bash
-   docker-compose up --build
