@@ -1,5 +1,7 @@
+from sqlalchemy import func
+
 from app import db
-import datetime
+from datetime import timezone
 
 class DownloadInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -11,9 +13,15 @@ class DownloadInfo(db.Model):
     format = db.Column(db.String(10), nullable=False)
     duration = db.Column(db.Integer, nullable=False)
     size = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.now())
+    created_at = db.Column(
+        db.DateTime(timezone=True),
+        server_default=func.now()
+    )
 
     def to_json(self):
+
+        local = self.created_at.replace(tzinfo=timezone.utc).astimezone(timezone.utc)
+
         return {
             "id": self.id,
             "requester_ip": self.requester_ip,
@@ -23,5 +31,9 @@ class DownloadInfo(db.Model):
             "format": self.format,
             "duration": self.duration,
             "size": self.size,
-            "datetime": self.created_at
+            "datetime": local.isoformat().replace("+00:00", "Z")
+
+
+
+
         }

@@ -19,12 +19,17 @@ const DownloadedStack = () => {
 
   const {data: downloads = [], isLoading, error} = useDownloads();
 
-  downloads.sort((a, b) => b.datetime - a.datetime);
-
+  const sortedDownloads = React.useMemo(
+    () =>
+      [...downloads].sort(
+        (a, b) => new Date(b.datetime) - new Date(a.datetime)
+      ),
+    [downloads]
+  );
 
   const total = downloads.length
   const offset = (page - 1) * PAGE_SIZE;
-  const visible = downloads.slice(offset, offset + PAGE_SIZE);
+  const visible = sortedDownloads.slice(offset, offset + PAGE_SIZE);
 
 
 

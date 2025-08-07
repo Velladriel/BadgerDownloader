@@ -28,8 +28,16 @@ function formatBytes(bytes, decimals=2) {
 }
 
 function timeAgo(dateString) {
+
+    //console.log({ dateString, parsed: new Date(dateString).toString() });
+     //console.log("secondsAgo:", Math.floor((Date.now() - new Date(dateString)) / 1000));
+
+
     const now = new Date();
     const past = new Date(dateString);
+
+    console.log({now, past});
+
     const secondsAgo = Math.floor((now-past)/1000)
 
     const units = [
@@ -79,6 +87,9 @@ const DownloadCard = ({download, setDownloads}) => {
         e.preventDefault();
         deleteDownload(download.id);
     }
+
+
+
 
     return (
 
