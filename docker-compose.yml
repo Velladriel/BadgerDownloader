@@ -2,8 +2,11 @@ version: '3.8'
 
 volumes:
   logs_data:
+    driver: local
   download_data:
+    driver: local
   instance_data:
+    driver: local
 
 services:
   server:

@@ -47,14 +47,26 @@ The easiest way to run BadgerDownloader is using Docker:
    cd BadgerDownloader
    ```
 
-2. In the client Dockerfile, update the IP address to your server address if needed
-
-3. Build and start the containers:
+2. Build and start the containers:
    ```bash
    docker-compose up --build
    ```
 
-4. Access the application at http://localhost:3000
+3. Access the application at http://localhost:3000
+
+#### Windows-Specific Docker Instructions
+
+For Windows users:
+
+1. Make sure Docker Desktop for Windows is installed and running
+2. Enable WSL 2 integration in Docker Desktop settings
+3. If you encounter path-related issues, ensure Docker has permission to access your drives
+4. Use PowerShell or Command Prompt to run Docker commands:
+   ```powershell
+   docker-compose up --build
+   ```
+
+For detailed information about Windows compatibility changes, see [WINDOWS_COMPATIBILITY.md](WINDOWS_COMPATIBILITY.md)
 
 The Docker setup includes:
 - Flask backend running on port 5000 (served via Gunicorn for production)
@@ -79,8 +91,25 @@ The Docker setup includes:
    ```
 
 3. Start the development server:
+   
+   Linux/macOS:
    ```bash
    npm run dev
+   ```
+   
+   Or use the provided script:
+   ```bash
+   ./dev_start_client.sh
+   ```
+   
+   Windows:
+   ```cmd
+   npm run dev
+   ```
+   
+   Or use the provided batch file:
+   ```cmd
+   dev_start_client.bat
    ```
 
 4. The frontend will be available at http://localhost:5173 (or the port specified by Vite)
@@ -114,8 +143,15 @@ The Docker setup includes:
    ```
    
    Or use the provided script:
+   
+   Linux/macOS:
    ```bash
    ./dev_start_server.sh
+   ```
+   
+   Windows:
+   ```cmd
+   dev_start_server.bat
    ```
 
 5. The API will be available at http://localhost:5000
@@ -150,8 +186,14 @@ The application includes an automatic cleanup mechanism to prevent the downloads
 
 To update the application with the latest code and rebuild the Docker containers:
 
+Linux/macOS:
 ```bash
 ./update.sh
+```
+
+Windows:
+```cmd
+update.bat
 ```
 
 This script will:
