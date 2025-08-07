@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Flex,
@@ -10,48 +10,23 @@ import {
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
 import DownloadCard from "@/components/DownloadCard.jsx";
-import {BASE_URL} from "@/App.jsx";
+import {useDownloads} from "@/hooks/useDownloads.js";
 
 const PAGE_SIZE = 3;
 
 const DownloadedStack = () => {
   const [page, setPage] = useState(1);
-  const [visible, setVisible] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [downloads, setDownloads] = useState([])
 
-  useEffect(() => {
-  const getDownloads = async () => {
-    try {
-      const res = await fetch(BASE_URL + "/get_downloads");
+  const {data: downloads = [], isLoading, error} = useDownloads();
+
+  downloads.sort((a, b) => b.datetime - a.datetime);
 
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error);
-      }
-
-      const sortedData = data.sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
-      setDownloads(sortedData);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const total = downloads.length
+  const offset = (page - 1) * PAGE_SIZE;
+  const visible = downloads.slice(offset, offset + PAGE_SIZE);
 
 
-  getDownloads()
-
-  }, [setDownloads]);
-
-  useEffect(() => {
-    const offset = (page - 1) * PAGE_SIZE;
-    setVisible(downloads.slice(offset, offset + PAGE_SIZE));
-  }, [page, downloads]);
-
-  const total = downloads.length;
 
   return (
     <Box>
@@ -97,7 +72,7 @@ const DownloadedStack = () => {
 
       <Stack spacing={6}>
         {visible.map((d) => (
-          <DownloadCard key={d.id} download={d} setDownloads={setDownloads}/>
+          <DownloadCard key={d.id} download={d}/>
         ))}
       </Stack>
     </Box>

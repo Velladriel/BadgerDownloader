@@ -13,9 +13,8 @@ import {
     Stack,
     CloseButton
 } from "@chakra-ui/react";
-import {BASE_URL} from "@/App.jsx";
-import {toaster, Toaster} from "@/components/ui/toaster.jsx";
-import {handleURLSubmit} from "@/utils/handleDownloadURL.js";
+
+import {useDeleteDownload, useDownloadMutation} from "@/hooks/useDownloads.js";
 
 
 function formatBytes(bytes, decimals=2) {
@@ -48,15 +47,14 @@ function timeAgo(dateString) {
       return `${value} ${unit.name}${value !== 1 ? "s" : ""} ago`;
     }
   }
-
   return "Just now";
 }
 
-function secondsToHms(duratiion) {
-    duratiion = Number(duratiion);
-    var h = Math.floor(duratiion / 3600);
-    var m = Math.floor(duratiion % 3600 / 60);
-    var s = Math.floor(duratiion % 3600 % 60);
+function secondsToHms(duration) {
+    duration = Number(duration);
+    var h = Math.floor(duration / 3600);
+    var m = Math.floor(duration % 3600 / 60);
+    var s = Math.floor(duration % 3600 % 60);
 
     var hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
     var mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
@@ -68,34 +66,18 @@ function secondsToHms(duratiion) {
 const DownloadCard = ({download, setDownloads}) => {
 
     const dialogRef = useRef(null);
+    const { mutate: startDownload, isLoading: isDownloading } = useDownloadMutation();
+    const { mutate: deleteDownload, isLoading: isDeleting } = useDeleteDownload();
 
-    const handleDeleteDownload = async () => {
-        try {
-            console.log(download.id)
-            const res = await fetch(BASE_URL + "/downloads/" + download.id, {
-                method: "DELETE",
-            });
 
-            const data = await res.json()
-            if (!res.ok) {
-				throw new Error(data.error);
-			}
+    const handleDownload = (e) => {
+        e.preventDefault();
+        startDownload({url: download.url, format: download.format});
+    }
 
-            setDownloads((prevDownloads) =>
-                prevDownloads.filter((d) => d.id !== download.id)
-            );
-
-            if (dialogRef.current) {
-                dialogRef.current.click();
-                toaster.success({
-                    title: "Download deleted",
-                    description: "Download entry has been deleted",
-                });
-            }
-
-        } catch (error) {
-            console.error(error)
-        }
+    const handleDelete = (e) => {
+        e.preventDefault();
+        deleteDownload(download.id);
     }
 
     return (
@@ -156,7 +138,7 @@ const DownloadCard = ({download, setDownloads}) => {
                             </NativeSelect.Field>
                         </NativeSelect.Root>
 
-                        <Button onClick={handleURLSubmit(download)}>Download</Button>
+                        <Button onClick={handleDownload}>Download</Button>
 
                         <Dialog.Root>
                             <Dialog.Trigger asChild>
@@ -187,7 +169,7 @@ const DownloadCard = ({download, setDownloads}) => {
                                                 bg="red.500"
                                                 _hover={{bg: "red.600"}}
                                                 color="white"
-                                                onClick={handleDeleteDownload}
+                                                onClick={handleDelete}
                                             >Delete</Button>
                                         </Dialog.Footer>
                                         <Dialog.CloseTrigger asChild>

@@ -10,7 +10,7 @@ import {
 import {useState} from "react";
 import {BASE_URL} from "@/App.jsx";
 import {Toaster} from "@/components/ui/toaster";
-import {handleURLSubmit} from "@/utils/handleDownloadURL.js";
+import {useDownloadMutation} from "@/hooks/useDownloads.js";
 
 const Searchfield = () => {
 
@@ -19,6 +19,17 @@ const Searchfield = () => {
     "url": "",
     "format": "mp4"
   });
+
+  const { mutate: startDownload, isLoading: isLoading } = useDownloadMutation();
+
+
+  const handleDownload = (e) => {
+    e.preventDefault();
+    startDownload(inputs).finally(() =>
+      setInputs({ url: "", format: "mp4" })
+    );
+  }
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -62,7 +73,7 @@ const Searchfield = () => {
       </Fieldset.Content>
 
 
-      <Button type="submit" alignSelf="flex-start" onClick={handleURLSubmit(inputs, setInputs)}>
+      <Button type="submit" alignSelf="flex-start" isLoading={isLoading} onClick={handleDownload}>
         Download!
       </Button>
       <Toaster/>
