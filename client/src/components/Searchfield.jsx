@@ -44,7 +44,7 @@ const Searchfield = () => {
       <Stack>
         <Fieldset.Legend>Download Video</Fieldset.Legend>
         <Fieldset.HelperText>
-          Enter Youtube Search/URL or Instagram Reel URL below:
+          Enter Youtube Search/URL, X Video URL or Instagram Reel URL below:
         </Fieldset.HelperText>
       </Stack>
 

@@ -6,9 +6,14 @@ A full-stack application for downloading and converting YouTube videos and Insta
 
 - Download videos from YouTube URLs or search terms
 - Download Instagram Reels
+- Download Twitter(X) Videos
 - Convert videos to multiple formats (mp4, mp3, opus, vorbis, wav, m4a, flv, webm, ogg, mkv)
 - Track download history
 - Manage downloaded files
+
+## Current Issues
+
+- Format change on the recent downloads not working 
 
 ## Project Structure
 
@@ -65,8 +70,6 @@ For Windows users:
    ```powershell
    docker-compose up --build
    ```
-
-For detailed information about Windows compatibility changes, see [WINDOWS_COMPATIBILITY.md](WINDOWS_COMPATIBILITY.md)
 
 The Docker setup includes:
 - Flask backend running on port 5000 (served via Gunicorn for production)
@@ -161,6 +164,15 @@ The Docker setup includes:
    gunicorn src.wsgi:app -b 0.0.0.0:5000
    ```
 
+## Network Access
+
+   To use it in the whole network replace 
+   `VITE_API_BASE` in the **docker-compose.yml**
+   with the local IP of the hosting device (192.168.178.XXX)
+
+  `VITE_API_BASE: http://yourdeviceip:5000`
+
+
 ## Usage
 
 1. Enter a YouTube URL, YouTube search term, or Instagram Reel URL in the search field
@@ -170,9 +182,6 @@ The Docker setup includes:
 5. Your download history is displayed below the search field
 
 ## Environment Variables
-
-### Frontend
-- `VITE_API_BASE`: Base URL for the API (default: http://localhost:5000)
 
 ### Backend
 - `FLASK_ENV`: Set to "development" for development mode
