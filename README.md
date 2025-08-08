@@ -1,6 +1,6 @@
 # BadgerDownloader
 
-A full-stack application for downloading and converting YouTube videos and Instagram Reels to various formats. Built with React frontend and Flask backend.
+A full-stack application for downloading and converting YouTube videos, Instagram Reels and Twitter videos to various formats. Built with React frontend and Flask backend.
 
 ## Features
 
