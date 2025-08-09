@@ -1,5 +1,3 @@
-version: '3.8'
-
 volumes:
   logs_data:
     driver: local
@@ -13,8 +11,8 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
+    expose:
+      - "5000"
     volumes:
       - logs_data:/app/logs
       - download_data:/app/downloads
@@ -24,10 +22,8 @@ services:
   client:
     build:
       context: ./client
-      args:
-        VITE_API_BASE: http://localhost:5000
+      dockerfile: Dockerfile
     ports:
-      - "3000:80"
-networks:
-  default:
-    driver: bridge
+      - "80:80"
+    depends_on:
+      - server

@@ -3,7 +3,7 @@ import {BASE_URL} from "@/App.jsx";
 import {toaster} from "@/components/ui/toaster.jsx";
 
 async function fetchDownloads() {
-    const res = await fetch(BASE_URL + "/get_downloads");
+    const res = await fetch(`${BASE_URL}/get_downloads`);
     const data = await res.json();
     if(!res.ok) {
         throw new Error(data.error);

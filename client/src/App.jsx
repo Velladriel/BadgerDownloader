@@ -5,7 +5,7 @@ import DownloadedStack from "@/components/DownloadedStack.jsx";
 
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
-export const BASE_URL = import.meta.env.VITE_API_BASE + "/api"
+export const BASE_URL = "/api"
 
 const queryClient = new QueryClient();
 
