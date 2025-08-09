@@ -30,11 +30,11 @@ def get_downloads():
     """
 
     log = logger.get_logger(level=10)
-    ip = request.remote_addr
+    client_ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0]
 
-    log.debug(f"Request IP: {ip}")
+    log.debug(f"Requested real IP: {client_ip}")
 
-    downloads = DownloadInfo.query.filter(DownloadInfo.requester_ip == ip)
+    downloads = DownloadInfo.query.filter(DownloadInfo.requester_ip == client_ip)
     result = [download.to_json() for download in downloads]
 
     return jsonify(result)
@@ -94,10 +94,12 @@ def download():
 
     log.debug(f"Download info: {info}")
 
+    client_ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0]
+
     try:
         download_info = DownloadInfo(
             yt_id=info.get('id'),
-            requester_ip=request.remote_addr,
+            requester_ip=client_ip,
             title=info.get('title'),
             url=info.get('url'),
             thumbnail_url=info.get('thumbnail'),
