@@ -32,7 +32,7 @@ def get_downloads():
     log = logger.get_logger(level=10)
     client_ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0]
 
-    log.debug(f"Requested real IP: {client_ip}")
+    log.debug(f"Requested client IP: {client_ip}")
 
     downloads = DownloadInfo.query.filter(DownloadInfo.requester_ip == client_ip)
     result = [download.to_json() for download in downloads]
