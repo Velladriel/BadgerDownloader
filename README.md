@@ -164,15 +164,6 @@ The Docker setup includes:
    gunicorn src.wsgi:app -b 0.0.0.0:5000
    ```
 
-## Network Access
-
-   To use it in the whole network replace 
-   `VITE_API_BASE` in the **docker-compose.yml**
-   with the local IP of the hosting device (192.168.178.XXX)
-
-  `VITE_API_BASE: http://yourdeviceip:5000`
-
-
 ## Usage
 
 1. Enter a YouTube URL, YouTube search term, or Instagram Reel URL in the search field
