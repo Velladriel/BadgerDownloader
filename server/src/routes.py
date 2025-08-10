@@ -49,13 +49,15 @@ def delete_download(id):
 
     log = logger.get_logger()
 
+    client_ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0]
+
     try:
         download_entry = DownloadInfo.query.get(id)
 
         if download_entry is None:
             return jsonify({"error":"Entry not found"}), 404
 
-        if download_entry.requester_ip != request.remote_addr:
+        if download_entry.requester_ip != client_ip:
             return jsonify({"error": "You are not allowed to delete this entry"}), 403
         
         db.session.delete(download_entry)
