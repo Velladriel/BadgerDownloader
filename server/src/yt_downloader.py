@@ -37,6 +37,7 @@ def create_ydl_opts(output_path: str, format: str = None):
 
     ydl_opts["logger"] = logger.get_logger('yt_downloader')
     ydl_opts["default_search"] = "ytsearch"
+    ydl_opts["cookiefile"] = "cookies.txt"
 
     log.debug(f"ydl options: {ydl_opts}")
 
