@@ -5,6 +5,8 @@ volumes:
     driver: local
   instance_data:
     driver: local
+  cookie_data:
+    driver: local
 
 services:
   server:
@@ -17,7 +19,19 @@ services:
       - logs_data:/app/logs
       - download_data:/app/downloads
       - instance_data:/app/instance
+      - cookie_data:/app/cookies
     restart: always
+
+  cookie_generator:
+    build: ./cookie_generator
+    env_file:
+      - ./cookie_generator/.env
+    volumes:
+      - ./cookie_generator/.env:/app/.env:ro
+      - cookie_data:/app/cookies
+    profiles: ["cookies"]
+
+      
 
   client:
     build:

@@ -30,6 +30,8 @@ A full-stack application for downloading and converting YouTube videos, Instagra
   - **downloads/** - Directory for downloaded files
   - **instance/** - SQLite database location
   - **logs/** - Application logs
+- **cookie_generator/**
+  - **cookie_generator.py** - Script to gather Youtube cookies
 
 ## Prerequisites
 
@@ -171,6 +173,11 @@ The Docker setup includes:
 3. Click "Download!" to start the download process
 4. Once complete, the file will be automatically downloaded to your device
 5. Your download history is displayed below the search field
+
+## Cookie problems
+
+If yt_dlp throws a cookie error, refer to
+[Cookie generator](cookie_generator/README.md)
 
 ## Environment Variables
 

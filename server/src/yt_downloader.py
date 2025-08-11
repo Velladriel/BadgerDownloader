@@ -11,6 +11,7 @@ output_dir = os.path.join(utils.get_parent_dir(), 'downloads')
 
 log = logger.get_logger('yt_downloader')
 
+cookies = "/app/cookies/cookies.txt"
 
 def create_ydl_opts(output_path: str, format: str = None):
     """
@@ -37,7 +38,7 @@ def create_ydl_opts(output_path: str, format: str = None):
 
     ydl_opts["logger"] = logger.get_logger('yt_downloader')
     ydl_opts["default_search"] = "ytsearch"
-    ydl_opts["cookiefile"] = "cookies.txt"
+    ydl_opts["cookiefile"] = cookies
 
     log.debug(f"ydl options: {ydl_opts}")
 
