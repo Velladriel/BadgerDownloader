@@ -31,8 +31,6 @@ services:
       - cookie_data:/app/cookies
     profiles: ["cookies"]
 
-      
-
   client:
     build:
       context: ./client

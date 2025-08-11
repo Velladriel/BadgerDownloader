@@ -1,6 +1,8 @@
 FROM python:3.12-slim
 ENV DEBIAN_FRONTEND=noninteractive
 
+
+
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
       cron \
@@ -35,16 +37,11 @@ COPY .env .
 COPY cookie_generator.py .
 COPY run.sh .
 
-
-# Drop your cron file into /etc/cron.d (system-style)
 COPY cookie-cron /etc/cron.d/cookie-cron
 RUN chmod 0644 /etc/cron.d/cookie-cron \
  && chmod +x        run.sh \
  && touch /var/log/cron.log
 
-
-# install playwright browsers if you still need them
 RUN playwright install --with-deps chromium
 
-# Launch cron in foreground; it will scan /etc/cron.d automatically
-CMD ["cron", "-f"]
+ENTRYPOINT ["./run.sh"]

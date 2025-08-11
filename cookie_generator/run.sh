@@ -5,4 +5,6 @@ set -a
 [ -f /app/.env ] && . /app/.env
 set +a
 
-exec /usr/local/bin/python3 cookie_generator.py
+/usr/local/bin/python3 cookie_generator.py
+
+cron -f
