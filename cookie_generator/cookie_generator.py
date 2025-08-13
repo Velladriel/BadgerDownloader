@@ -5,12 +5,6 @@ import logging
 
 from playwright.sync_api import sync_playwright
 from dotenv import load_dotenv
-from pathlib import Path
-
-
-#parent_dir = Path(Path(__file__).parent).parent
-#target_dir = f"{parent_dir}/src/music/cookies.txt"
-#log_loc = f"{parent_dir}/logs"
 
 target_dir = "/app/cookies/cookies.txt"
 
