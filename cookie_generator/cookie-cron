@@ -4,4 +4,4 @@ HOME=/root
 PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
 
-* * * * * root cd /app && python3 /app/cookie_generator.py >> /app/cookies/cron.log 2>&1
+0 5 * * * root cd /app && python3 /app/cookie_generator.py >> /app/cookies/cron.log 2>&1
