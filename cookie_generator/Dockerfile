@@ -6,6 +6,7 @@ WORKDIR /app
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+#RUN playwright install chromium
 
 
 COPY .env .
@@ -24,7 +25,8 @@ RUN apt-get update \
 
 RUN chmod 0644 /etc/cron.d/cookie-cron \
  && chmod +x /app/run.sh \
- && touch /var/log/cron.log
+ && touch /var/log/cron.log \
+ && mkdir -p /app/cookies
 
 
 ENTRYPOINT ["./run.sh"]

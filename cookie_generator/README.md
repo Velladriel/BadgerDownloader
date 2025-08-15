@@ -46,7 +46,7 @@ If you don't already have a Google account:
 
 ## 3. Running with Docker Compose
 
-The cookie generator is configured to run as a service in the BadgerDownloader application's docker-compose setup. It runs on a cron schedule (every minute) to ensure your cookies are always fresh.
+The cookie generator is configured to run as a service in the BadgerDownloader application's docker-compose setup. It runs on a cron schedule (once daily at 5 AM) to ensure your cookies are regularly refreshed.
 
 1. Make sure your `.env` file is properly configured in the cookie_generator directory.
 
@@ -55,9 +55,10 @@ The cookie generator is configured to run as a service in the BadgerDownloader a
    docker-compose --profile cookies up -d
    ```
 3. The service will automatically:
-   - Run on a schedule (see `cookie-cron` file)
+   - Install the required Playwright browser (Chromium)
+   - Run on a schedule (once daily at 5 AM, see `cookie-cron` file)
    - Save cookies to a shared volume that the main application can access
-   - Log its activity to /app/cron.log inside the container
+   - Log its activity to /app/cookies/cron.log inside the container
 
 4. To stop the service:
    ```bash

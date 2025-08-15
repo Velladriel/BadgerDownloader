@@ -7,4 +7,4 @@ set +a
 
 python3 cookie_generator.py
 
-cron -f
+/usr/sbin/cron -f
