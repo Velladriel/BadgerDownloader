@@ -207,3 +207,7 @@ This script will:
 1. Pull the latest code from the repository
 2. Rebuild and restart the Docker containers in detached mode
 
+
+## Disclaimer
+
+Use this only for private use. Don't break any TOS!

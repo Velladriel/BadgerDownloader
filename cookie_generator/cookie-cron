@@ -1,4 +1,7 @@
-SHELL=/bin/sh
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+HOME=/root
+PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
 
 0 5 * * * root cd /app && python3 /app/cookie_generator.py >> /app/cookies/cron.log 2>&1
