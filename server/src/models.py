@@ -34,8 +34,4 @@ class DownloadInfo(db.Model):
             "duration": self.duration,
             "size": self.size,
             "datetime": local.isoformat().replace("+00:00", "Z")
-
-
-
-
         }
