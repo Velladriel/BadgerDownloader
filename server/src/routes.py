@@ -1,6 +1,7 @@
 import asyncio
 import os
 from datetime import datetime
+from uuid import uuid4
 
 #from crypt import methods
 
@@ -28,13 +29,15 @@ def get_downloads():
 
     :return: Downloaded songs as json
     """
+    session_id = request.cookies.get('session_id')
 
-    log = logger.get_logger(level=10)
-    client_ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0]
+    #log = logger.get_logger(level=10)
+    #log.debug(f"Requested session ID: {session_id}")
 
-    log.debug(f"Requested client IP: {client_ip}")
+    #client_ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0]
+    #log.debug(f"Requested client IP: {client_ip}")
 
-    downloads = DownloadInfo.query.filter(DownloadInfo.requester_ip == client_ip)
+    downloads = DownloadInfo.query.filter(DownloadInfo.session_id == session_id)
     result = [download.to_json() for download in downloads]
 
     return jsonify(result)
@@ -49,7 +52,8 @@ def delete_download(id):
 
     log = logger.get_logger()
 
-    client_ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0]
+    #client_ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0]
+    session_id = request.cookies.get('session_id')
 
     try:
         download_entry = DownloadInfo.query.get(id)
@@ -57,7 +61,7 @@ def delete_download(id):
         if download_entry is None:
             return jsonify({"error":"Entry not found"}), 404
 
-        if download_entry.requester_ip != client_ip:
+        if download_entry.session_id != session_id:
             return jsonify({"error": "You are not allowed to delete this entry"}), 403
         
         db.session.delete(download_entry)
@@ -79,6 +83,11 @@ def download():
     """
 
     log = logger.get_logger()
+
+    session_id = request.cookies.get('session_id')
+    if not session_id:
+        session_id = uuid4().hex
+        log.debug(f"Generated new session_id: {session_id}")
 
     data = request.json
 
@@ -102,6 +111,7 @@ def download():
         download_info = DownloadInfo(
             yt_id=info.get('id'),
             requester_ip=client_ip,
+            session_id=session_id,
             title=info.get('title'),
             url=info.get('url'),
             thumbnail_url=info.get('thumbnail'),
@@ -136,4 +146,15 @@ def download():
         log.info("Delete file")
         clean_dir(download_folder, file_name)
 
-    return send_from_directory(output_dir, file_name , as_attachment=True, download_name=file_name)
+    resp = send_from_directory(output_dir, file_name , as_attachment=True, download_name=file_name)
+
+    resp.set_cookie(
+        'session_id',
+        session_id,
+        max_age=30 * 24 * 60 * 60,
+        httponly=True,
+        samesite='Lax',
+        secure=False
+    )
+
+    return resp

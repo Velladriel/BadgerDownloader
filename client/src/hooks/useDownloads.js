@@ -42,6 +42,7 @@ export function useDownloadMutation() {
       const res = await fetch(`${BASE_URL}/download`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ url, format }),
       });
       if (!res.ok) {

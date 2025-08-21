@@ -6,6 +6,7 @@ from datetime import timezone
 class DownloadInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     yt_id = db.Column(db.String(11), nullable=False)
+    session_id = db.Column(db.String(32), nullable=False)
     requester_ip = db.Column(db.String(15), nullable=False)
     title = db.Column(db.String(100), nullable=False)
     url = db.Column(db.String(100), nullable=False)
@@ -25,6 +26,7 @@ class DownloadInfo(db.Model):
         return {
             "id": self.id,
             "requester_ip": self.requester_ip,
+            "session_id": self.session_id,
             "title": self.title,
             "url": self.url,
             "thumbnail_url": self.thumbnail_url,
