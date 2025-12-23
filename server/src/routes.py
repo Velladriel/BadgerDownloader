@@ -11,6 +11,7 @@ from app import app, db
 import yt_downloader, in_downloader
 import logger
 from models import DownloadInfo
+from yt_dlp.utils import DownloadError
 
 from utils import clean_dir, get_parent_dir, get_dir_size
 
@@ -92,7 +93,17 @@ def download():
     if "instagram.com" in url:
         info = in_downloader.download_reel(url, format)
     else:
-        info = asyncio.run(yt_downloader.download_video(url, format))
+
+        try:
+            info = asyncio.run(yt_downloader.download_video(url, format))
+        except DownloadError as e:
+            logger.error(f"Download error: {e}")
+            return {
+                "status": "error",
+                "error": "FORMAT_NOT_AVAILABLE",
+                "message": str(e),
+            }
+
 
     log.debug(f"Download info: {info}")
 

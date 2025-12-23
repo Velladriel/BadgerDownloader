@@ -28,18 +28,21 @@ def create_ydl_opts(output_path: str, format: str = None):
     }
 
     if format and format in ['mp3', 'm4a', 'opus', 'vorbis', 'wav']:
+        ydl_opts["format"] = "bestaudio/best"
         ydl_opts["postprocessors"] = [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': format,
             'preferredquality': '192',
         }]
-        # This is a critical addition:
-        # Ensures the audio is actually compatible with the extractor
-        ydl_opts["format"] = "bestaudio/best"
 
     elif format and format in ['mp4', 'flv', 'webm', 'ogg', 'mkv']:
-        # It's better to use format selectors than just the extension name
-        ydl_opts["format"] = f"bestvideo[ext={format}]+bestaudio[ext=m4a]/best[ext={format}]/best"
+
+        ydl_opts["format"] = (
+            f"bestvideo[ext={format}]/"
+            f"bestvideo+bestaudio/"
+            f"best"
+        )
+        ydl_opts["merge_output_format"] = format
 
     ydl_opts["logger"] = logger.get_logger('yt_downloader')
     ydl_opts["default_search"] = "ytsearch"
