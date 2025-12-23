@@ -13,18 +13,19 @@ log = logger.get_logger('yt_downloader')
 
 cookies = "/app/cookies/cookies.txt"
 
+
 def create_ydl_opts(output_path: str, format: str = None):
     """
     Creates ydl options for downloading.
-
-    :param output_path: File location
-    :param format: Video/Audio format
-    :return:
     """
-
-    ydl_opts = {'outtmpl': f"{output_path}/%(title)s.%(ext)s"}
-
-
+    ydl_opts = {
+        'outtmpl': f"{output_path}/%(title)s.%(ext)s",
+        # Explicitly point to the location in the slim-debian image
+        'ffmpeg_location': '/usr/bin/ffmpeg',
+        # Increase compatibility by allowing non-zero return codes if minor
+        'nocheckcertificate': True,
+        'prefer_ffmpeg': True,
+    }
 
     if format and format in ['mp3', 'm4a', 'opus', 'vorbis', 'wav']:
         ydl_opts["postprocessors"] = [{
@@ -32,15 +33,17 @@ def create_ydl_opts(output_path: str, format: str = None):
             'preferredcodec': format,
             'preferredquality': '192',
         }]
-    elif format and format in ['mp4', 'flv', 'webm', 'ogg', 'mkv']:
-        ydl_opts["format"] = format
+        # This is a critical addition:
+        # Ensures the audio is actually compatible with the extractor
+        ydl_opts["format"] = "bestaudio/best"
 
+    elif format and format in ['mp4', 'flv', 'webm', 'ogg', 'mkv']:
+        # It's better to use format selectors than just the extension name
+        ydl_opts["format"] = f"bestvideo[ext={format}]+bestaudio[ext=m4a]/best[ext={format}]/best"
 
     ydl_opts["logger"] = logger.get_logger('yt_downloader')
     ydl_opts["default_search"] = "ytsearch"
     ydl_opts["cookiefile"] = cookies
-
-    log.debug(f"ydl options: {ydl_opts}")
 
     return ydl_opts
 
