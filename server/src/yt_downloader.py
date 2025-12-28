@@ -38,7 +38,6 @@ def create_ydl_opts(output_path: str, format: str = None):
     elif format and format in ['mp4', 'flv', 'webm', 'ogg', 'mkv']:
 
         ydl_opts["format"] = (
-            f"bestvideo[ext={format}]/"
             f"bestvideo+bestaudio/"
             f"best"
         )
