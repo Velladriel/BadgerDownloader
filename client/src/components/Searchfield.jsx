@@ -25,9 +25,11 @@ const Searchfield = () => {
 
   const handleDownload = (e) => {
     e.preventDefault();
-    startDownload(inputs).finally(() =>
-      setInputs({ url: "", format: "mp4" })
-    );
+    startDownload(inputs, {
+      onSuccess: () => {
+        setInputs({ url: "", format: "mp4" });
+      },
+    });
   }
 
 
@@ -40,11 +42,13 @@ const Searchfield = () => {
   };
 
   return (
+
+      <form onSubmit={handleDownload}>c
     <Fieldset.Root size="lg" maxW="md">
       <Stack>
         <Fieldset.Legend>Download Video</Fieldset.Legend>
         <Fieldset.HelperText>
-          Enter Youtube Search/URL, X Video URL or Instagram Reel URL below:
+          Enter Youtube Search/URL, X/Tiktok Video or Instagram Reel URL below:
         </Fieldset.HelperText>
       </Stack>
 
@@ -73,11 +77,12 @@ const Searchfield = () => {
       </Fieldset.Content>
 
 
-      <Button type="submit" alignSelf="flex-start" isLoading={isLoading} onClick={handleDownload}>
+      <Button type="submit" alignSelf="flex-start" loading={isLoading}>
         Download!
       </Button>
       <Toaster/>
     </Fieldset.Root>
+        </form>
   )
 }
 
