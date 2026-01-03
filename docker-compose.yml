@@ -20,7 +20,7 @@ services:
       - download_data:/app/downloads
       - instance_data:/app/instance
       - cookie_data:/app/cookies
-    restart: always
+    restart: unless-stopped
 
   cookie_generator:
     build: ./cookie_generator
@@ -37,5 +37,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:80"
+    restart: unless-stopped
     depends_on:
       - server
