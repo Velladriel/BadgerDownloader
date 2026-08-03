@@ -15,16 +15,15 @@ cookies = "/app/cookies/cookies.txt"
 
 
 def create_ydl_opts(output_path: str, format: str = None):
-    """
-    Creates ydl options for downloading.
-    """
     ydl_opts = {
         'outtmpl': f"{output_path}/%(title)s.%(ext)s",
-        # Explicitly point to the location in the slim-debian image
         'ffmpeg_location': '/usr/bin/ffmpeg',
-        # Increase compatibility by allowing non-zero return codes if minor
         'nocheckcertificate': True,
         'prefer_ffmpeg': True,
+        'extractor_args': {
+            'youtube': ['player_client=android,ios,tv,web']
+        },
+        'remote_components': ['ejs:github'],
     }
 
     if format and format in ['mp3', 'm4a', 'opus', 'vorbis', 'wav']:

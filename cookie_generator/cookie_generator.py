@@ -73,27 +73,32 @@ def run(playwright):
     logger.info("Trying to log in")
     #Logging in here
     try:
-        page.goto(
-            "https://accounts.google.com/InteractiveLogin/signinchooser?continue=https%3A%2F%2Fwww.youtube.com%2Fsignin%3Faction_handle_signin%3Dtrue%26app%3Ddesktop%26hl%3Dde%26next%3Dhttps%253A%252F%252Fwww.youtube.com%252F&ec=65620&hl=de&passive=true&service=youtube&uilel=3&ifkv=ASSHykpvvV-AOLdbUnBPRh9GECaTqKrYs-FTv4n5UEtYpnFM1L6to7ktLDmJQYA4cSkImYO6SjeD&ddm=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin")
-        page.wait_for_selector('input[type="email"]')
-        page.fill('input[type="email"]', GOOGLE_EMAIL)
+        page.goto("https://accounts.google.com/ServiceLogin?service=youtube&continue=https://www.youtube.com/")
 
-        try:
-            page.get_by_role("button", name="Weiter").click()
-        except Exception as e:
-            logger.error(f"Couldn't find button 'weiter':{e}")
-            page.get_by_role("button", name="Next").click()
+        # 1. Wait for Google's specific email input ID
+        page.wait_for_selector('#identifierId', state="visible")
 
-        page.wait_for_selector('input[type="password"]')
-        page.fill('input[type="password"]', GOOGLE_PW)
+        # 2. Click it to focus the element (simulating human interaction)
+        page.locator('#identifierId').click()
 
-        try:
-            page.get_by_role("button", name="Weiter").click()
-        except Exception as e:
-            logger.error(f"Couldn't find button 'weiter':{e}")
-            page.get_by_role("button", name="Next").click()
+        # 3. Use press_sequentially to type it out like a human (helps bypass basic bot checks)
+        page.locator('#identifierId').press_sequentially(GOOGLE_EMAIL, delay=50)
 
-        page.wait_for_url("https://www.youtube.com")
+        # 4. Click the Next button
+        page.locator("button:has-text('Weiter'), button:has-text('Next')").first.click()
+
+        # Wait for the password field to appear (Google uses a different selector for this)
+        page.wait_for_selector('input[type="password"]', state="visible")
+        page.locator('input[type="password"]').click()
+        page.locator('input[type="password"]').press_sequentially(GOOGLE_PW, delay=50)
+
+        page.locator("button:has-text('Weiter'), button:has-text('Next')").first.click()
+
+        page.wait_for_url("https://www.youtube.com/**", timeout=30000)
+
+    except Exception as e:
+        logger.critical(f"Error logging in: {e}")
+        exit(0)
 
 
     except Exception as e:

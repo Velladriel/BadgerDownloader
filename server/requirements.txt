@@ -19,3 +19,4 @@ yt-dlp
 gunicorn
 ffmpeg-python
 instaloader
+yt-dlp-ejs
