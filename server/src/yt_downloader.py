@@ -23,7 +23,6 @@ def create_ydl_opts(output_path: str, format: str = None):
         'extractor_args': {
             'youtube': ['player_client=android,ios,tv,web']
         },
-        'remote_components': ['ejs:github'],
     }
 
     if format and format in ['mp3', 'm4a', 'opus', 'vorbis', 'wav']:
