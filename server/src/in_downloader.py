@@ -11,32 +11,29 @@ import logger
 log = logger.get_logger("in_logger")
 download_dir = os.path.join(get_parent_dir(), "downloads")
 
-def build_video_info(post: instaloader.Post, size, video_name):
 
+def build_video_info(post: instaloader.Post, size, video_name, duration):
     relevant_info = {
         'id': post.shortcode,
         'title': video_name,
         'thumbnail': post.url,
-        'duration': post.video_duration,
+        'duration': duration,  # Use the locally parsed duration
         'format': "mp4",
         'file_size': size
     }
-
     return relevant_info
 
 
 def download(shortcode):
-
     log.info(f"Starting download for: {shortcode}")
 
     insta = instaloader.Instaloader()
     post = Post.from_shortcode(insta.context, shortcode)
     url = post.video_url
+
     response = requests.get(url, stream=True)
     if response.status_code == 200:
-
         video_name = f"{post.owner_username}_{post.shortcode}"
-
         file_path = os.path.join(download_dir, video_name + ".mp4")
 
         with open(file_path, 'wb') as file:
@@ -44,9 +41,19 @@ def download(shortcode):
                 if chunk:
                     file.write(chunk)
 
-        return build_video_info(post, get_file_size(file_path), video_name)
+        # Parse the duration from the downloaded file here
+        actual_duration = get_local_duration(file_path)
+
+        return build_video_info(post, get_file_size(file_path), video_name, actual_duration)
 
 
+def get_local_duration(file_path):
+    try:
+        probe = ffmpeg.probe(file_path)
+        return float(probe['format']['duration'])
+    except ffmpeg.Error as e:
+        log.error(f"Failed to probe duration: {e}")
+        return None
 
 def get_short_code(url: str):
     parsed = urllib.parse.urlparse(url)
@@ -84,10 +91,8 @@ def download_reel(url, format):
 
     info["url"] = url
 
-    print(info)
-
     return info
 
 
 if __name__ == "__main__":
-    download_reel("https://www.instagram.com/reels/C_ks3NntoaD/?hl=en", "mp3")
+    download_reel("https://www.instagram.com/reel/DbeHMY9oxWU", "mp3")
